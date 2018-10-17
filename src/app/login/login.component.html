@@ -1,3 +1,10 @@
+<mat-toolbar color="primary">Booking System
+  <span class="spacer"></span>
+  <div class = "header-right">
+  </div>
+  </mat-toolbar>
+
+<mat-card class="main-div">
 <div class="form-group">
   <mat-form-field>
     <input name ="email" id="email" type="text" class="form-control" [(ngModel)]="email" matInput placeholder="Email">
@@ -10,5 +17,7 @@
 <a mat-raised-button (click)=login()>Login</a>
 <a mat-raised-button routerLink='signup'>Sign Up</a>
 <a routerLink = "/reset" routerLinkActive ="active" class="create-account-txt">
+  <br>
   <Strong>Reset Password</Strong></a>
 </div>
+</mat-card>

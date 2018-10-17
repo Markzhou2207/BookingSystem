@@ -1,0 +1,12 @@
+
+.header-right {
+    float: right;
+  }
+  .header {
+    overflow: hidden;
+    background-color: #344563;
+    padding: 5px 5px;
+  }
+  .spacer {
+    flex: 1 1 auto;
+  }

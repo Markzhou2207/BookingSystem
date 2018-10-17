@@ -61,3 +61,16 @@
   max-width:400px;
   background-color: rgb(2, 117, 216,0.5);
 }
+
+
+.header-right {
+  float: right;
+}
+.header {
+  overflow: hidden;
+  background-color: #344563;
+  padding: 5px 5px;
+}
+.spacer {
+  flex: 1 1 auto;
+}

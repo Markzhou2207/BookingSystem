@@ -25,6 +25,9 @@ export class HomeComponent implements OnInit {
       this.today = new Date(tempDate.getFullYear(),tempDate.getMonth(),tempDate.getDate());
   }
 
+  logOut(){
+    this.authService.logout();
+  }
   // Returns the bookings of a given user and displays the active bookings
   getBookings(): void{
     console.log("Getting bookings for "+this.authService.currentUserName);
@@ -59,6 +62,44 @@ export class HomeComponent implements OnInit {
   //Deletes a booking
   delete(email:string,env:string, start:Date,end:Date){
     this.bookingService.deleteBooking(email,env,start,end);
+    this.bookingService.getBookingsByEnviroment(env)
+    .subscribe(b=>{
+      var standardList = new Array();
+      var pencilList= new Array();
+      for(var i=0;i<b.length;i++){
+        console.log(i);
+        if(b[i].type=="standard"){
+          console.log('standard');
+          standardList.push(i);
+        } else {
+          pencilList.push(i);
+        }
+      }
+      console.log("Number of standard bookings "+standardList.length);
+      console.log("Number of pencilled bookings "+pencilList.length);
+      for(var j=0;j<pencilList.length;j++){
+        console.log(pencilList[j]);
+        var pencilStart =new Date(b[pencilList[j]].startDate.seconds*1000).getTime();
+        var pencilEnd =new Date(b[pencilList[j]].endDate.seconds*1000).getTime();
+        var clash = false;
+        for(var k=0;k<standardList.length;k++){
+          var standardStart = new Date(b[standardList[k]].startDate.seconds*1000).getTime(); 
+          var standardEnd = new Date(b[standardList[k]].endDate.seconds*1000).getTime(); 
+          if(pencilStart>=standardStart && pencilStart<=standardEnd
+            || pencilEnd>=standardStart && pencilEnd<=standardEnd
+            || pencilStart<=standardStart && pencilEnd >= standardEnd){
+              clash = true;
+            }
+        }
+        if(clash){
+          console.log("IS CLASHING");
+        } else {
+          this.bookingService.makeBooking(b[pencilList[j]].email,b[pencilList[j]].name,env,
+            new Date(b[pencilList[j]].startDate.seconds *1000),
+            new Date (b[pencilList[j]].endDate.seconds*1000));
+        }
+      }
+    })
   }
 
   // Opens the confirmation window to delete a booking

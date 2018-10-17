@@ -11,6 +11,7 @@ export class SignupComponent implements OnInit {
   password2:'';
   email:'';
   name:'';
+  validPassword = true;
   constructor(private authService:AuthService) { }
 
   ngOnInit() {
@@ -20,6 +21,9 @@ export class SignupComponent implements OnInit {
   signUp(){
     if(this.password1!==this.password2){
       console.log("Incorrect passwords");
+    } else if (this.password1.length<6){
+      this.validPassword=false;
+    
     } else {
       this.authService.emailSignup(this.email,this.name,this.password1);
     }

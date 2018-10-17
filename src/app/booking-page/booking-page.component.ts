@@ -3,7 +3,6 @@ import { BookingService } from '../booking.service';
 import {NgbDateStruct, NgbCalendar, NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../core/auth.service';
 import {MatSnackBar} from '@angular/material';
-import { MatCard } from '@angular/material/card';
 @Component({
   selector: 'app-booking-page',
   templateUrl: './booking-page.component.html',
@@ -34,7 +33,8 @@ export class BookingPageComponent implements OnInit{
   //NgbCalendar
   model: NgbDateStruct;
   date: {year: number, month: number};
-  minDate = {year : this.today.getFullYear, month : this.today.getMonth, day:this.today.getDate};
+  minDate: NgbDateStruct = {year : this.today.getFullYear(), 
+    month : this.today.getMonth()+1, day:this.today.getDate()};
   hoveredDate: NgbDate;
   fromDate: NgbDate;
   toDate: NgbDate;
@@ -52,6 +52,11 @@ export class BookingPageComponent implements OnInit{
 
    }
   
+
+  logOut(){
+    this.authService.logout();
+  }
+
   /**
    * Checks if booking for an environment is free
    * Creates booking if the slot is free
@@ -116,6 +121,7 @@ export class BookingPageComponent implements OnInit{
     this.bookingStatus=[];
     this.bookingService.getBookingsByEnviroment(this.request.environment).subscribe(b=>{
       for(var i=0;i<b.length;i++){
+        console.log("Getting "+b[i].name+" "+b[i].type);
         const start = new Date(b[i].startDate.seconds*1000);
         start.setHours(0);
         const end = new Date(b[i].endDate.seconds*1000);

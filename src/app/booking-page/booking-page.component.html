@@ -1,76 +1,94 @@
-<form name="signupForm" id="signupForm">
-
-     <div class ="form-group">  
-
-      <mat-select class = "dropdown" id="environment" required [(ngModel)]="request.environment" name = "environment" 
-      (selectionChange)="envChanged()" placeholder="Environment">
-        <mat-option *ngFor="let env of environments" [value]="env">{{env}}</mat-option>
-      </mat-select>
-
-      <br>
-<ngb-datepicker 
-#dp (select)="onDateSelection($event)"
-[displayMonths]="1" 
-[dayTemplate]="t">
-</ngb-datepicker>
-
-<ng-template #t let-date="date"
- class = "test"
- width = "10em"
- let-focused="focused"
- let-currentMonth="currentMonth"
- let-currentDate="currentDate">
-  <span class="custom-day"
-        [class.hidden]="date.month !== currentMonth"
-        [class.faded]="isHovered(date) || isInside(date)"
-        [class.booked]="isBooked(date)"
-        [class.pencil]="isPencilled(date)"
-        [class.focused]="focused"
-        [class.range]="isRange(date)"
-
-        [class.bookedPencil]="isBookedAndPencilled(date)"
-        (mouseenter)="hoveredDate = date"
-
-        (mouseleave)="hoveredDate = null">
-    {{ date.day }}
-  </span>
-</ng-template>
-
-
-
-
-
-
-
-
+<mat-toolbar color="primary">Booking System
+  <span class="spacer"></span>
+  <div class = "header-right">
+    <a routerLink='/home'><a mat-raised-button>Home</a></a>
+    <a routerLink ='/booking'><a mat-raised-button>Book</a></a>
+  <a mat-raised-button (click)="logOut()">Log Out</a>
   </div>
-  <div class="form-group">
-  <button class = "btn btn-primary" type = "Submit" id="sendMessageButton" (click)="makeBooking()">Submit</button>
+  </mat-toolbar>
 
 
-</div>
+  <form name="signupForm" id="signupForm">
+
+    <div class="container" fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayoutGap="2.5%" fxLayoutAlign ="center">
+        <div fxFlex="30%">
+              <div class ="form-group">
+              
+                <mat-select class = "dropdown" id="environment" required [(ngModel)]="request.environment" name = "environment"
+                (selectionChange)="envChanged()" placeholder="Environment">
+                  <mat-option *ngFor="let env of environments" [value]="env">{{env}}</mat-option>
+                </mat-select>
+              </div>
+        </div>        
+        <div fxFlex="40%">
+
+          <ngb-datepicker
+          #dp (select)="onDateSelection($event)"
+          [displayMonths]="1"
+          [dayTemplate]="t"
+          [minDate]="minDate">
+          
+          </ngb-datepicker>
+      
+      
+          <ng-template #t let-date="date"
+                          class = "test"
+                          width = "10em"
+                          let-focused="focused"
+                          let-currentMonth="currentMonth"
+                          let-currentDate="currentDate">
+          <span class="custom-day"
+              [class.hidden]="date.month !== currentMonth"
+              [class.faded]="isHovered(date) || isInside(date)"
+              [class.booked]="isBooked(date)"
+              [class.pencil]="isPencilled(date)"
+              [class.focused]="focused"
+              [class.range]="isRange(date)"
+              [class.bookedPencil]="isBookedAndPencilled(date)"
+              (mouseenter)="hoveredDate = date"
+              (mouseleave)="hoveredDate = null">
+              {{ date.day }}
+          </span>
+          </ng-template>
+          
+         </div>
+         <div fxFlex="30%">
+          <div class="form-group">
+          <button class = "btn btn-primary" type = "Submit" id="sendMessageButton" (click)="makeBooking()">Submit</button>
+  
+  
+         </div>
+         </div>
+  </div>
   </form>
-
-  <div *ngIf="!submitted">
-    Please enter all values.
-  </div>  
-  <div *ngIf="!validBooking">Booking unavaliable</div>
-
-
-<div *ngIf="booked">
-<mat-card class="bookingCard">
-  <div *ngIf="selectedOwner != null">
-    Booked by : {{selectedOwner}}
-    <br>
-    Dates : {{selectedFrom| date: 'dd/MM/yyyy'}} - {{selectedTo| date: 'dd/MM/yyyy'}}
-    <br>
+  
+  
+  
+   <div *ngIf="!submitted">
+     Please enter all values.
+   </div>
+   <div *ngIf="!validBooking">Booking unavaliable</div>
+  
+  
+  <div *ngIf="booked">
+  <div class="container" fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayoutGap="2.5%" fxLayoutAlign ="center">
+      <div fxFlex="30%">
+          <mat-card class="bookingCard">
+          <div *ngIf="selectedOwner != null">
+              Booked by : {{selectedOwner}}
+              <br>
+              Dates : {{selectedFrom| date: 'dd/MM/yyyy'}} - {{selectedTo| date: 'dd/MM/yyyy'}}
+              <br>
+          </div>
+          
+          <div *ngIf="pencilledOwner != null">
+              Pencilled by : {{pencilledOwner}}
+              <br>
+              Dates : {{pencilledFrom| date: 'dd/MM/yyyy'}} - {{pencilledTo| date: 'dd/MM/yyyy'}}
+              <br>
+              Status : {{pencilledStatus}}
+          </div>
+          </mat-card>
+      </div>
   </div>
-  <div *ngIf="pencilledOwner != null">
-      Pencilled by : {{pencilledOwner}}
-      <br>
-      Dates : {{pencilledFrom| date: 'dd/MM/yyyy'}} - {{pencilledTo| date: 'dd/MM/yyyy'}}
-      <br>
-      Status : {{pencilledStatus}}
-    </div>
-</mat-card>
-</div>
+  </div>
