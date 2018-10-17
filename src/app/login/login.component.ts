@@ -9,15 +9,12 @@ import { AuthService } from '../core/auth.service';
 export class LoginComponent implements OnInit {
   email:'';
   password:'';
-  correctInfo=true;
   constructor(private authService:AuthService) { }
 
   ngOnInit() {
   }
   login(){
     this.authService.emailLogin(this.email,this.password);
-    console.log(this.email);
-    console.log(this.correctInfo);
 
   }
 }

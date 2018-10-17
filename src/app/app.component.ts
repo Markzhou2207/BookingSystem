@@ -7,12 +7,9 @@ import {AuthService } from './core/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = "Booking Service"
   loggedIn =localStorage.getItem('currentUser')
-
   constructor(private authService:AuthService){
   }
-
   // Logs the user out of the booking system
   logOut(){
     this.authService.logout();

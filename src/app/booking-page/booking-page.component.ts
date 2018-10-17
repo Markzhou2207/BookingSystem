@@ -79,28 +79,23 @@ export class BookingPageComponent implements OnInit{
           ||tempStart.getTime()<=this.testBookings[i].getTime()
           && tempEnd.getTime()>=this.testBookings[i+1].getTime()){
             bookingOwner.push(this.bookingEmails[i/2]);
-            console.log(this.bookingStatus[i/2]+'...............');
             if(this.bookingStatus[i/2]=='pencil' ||
             this.bookingStatus[i/2]=='pencil pending'){
-              console.log("Hello");
               notBooked = false;
             }
           }
         }
                                
         if (bookingOwner.length>0 && notBooked){
-          this.bookingService.makePencilBooking(this.request.email,this.request.name,
-            this.request.environment,tempStart,tempEnd,bookingOwner);
-            console.log("Making Pencil");
-            this.openSnackBar();
+           this.bookingService.makePencilBooking(this.request.email,this.request.name,
+           this.request.environment,tempStart,tempEnd,bookingOwner);
+           this.openSnackBar();
         } else if(notBooked){
-            console.log("Making booking");
-            this.bookingService.makeBooking(this.request.email,this.request.name,
-            this.request.environment,tempStart,tempEnd);
-            this.openSnackBar();
+           this.bookingService.makeBooking(this.request.email,this.request.name,
+           this.request.environment,tempStart,tempEnd);
+           this.openSnackBar();
         } else {
-          console.log("Failed");
-          this.validBooking=false;
+           this.validBooking=false;
         }
       }
 
@@ -161,11 +156,16 @@ export class BookingPageComponent implements OnInit{
 
   
 
-
+  /**
+   *  Checks if the mouse is hovering over a date
+   */
   isHovered(date: NgbDate) {
     return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
   }
 
+  /**
+   *  Checks if a date is inside the selected range on the calendar
+   */
   isInside(date: NgbDate) {
     return date.after(this.fromDate) && date.before(this.toDate);
   }
@@ -190,6 +190,9 @@ export class BookingPageComponent implements OnInit{
     return false;
   }
 
+  /**
+   * Checks if there is a pencilled booking for the date
+   */
   isPencilled(date: NgbDate){
     var tempDate = new Date(date.year,date.month-1,date.day);
     for(var i=0;i<this.testBookings.length;i=i+2){
@@ -202,6 +205,10 @@ export class BookingPageComponent implements OnInit{
     }
     return false;
   }
+
+  /**
+   * Checks if there's a pencilled booking as well as a standard booking for the date
+   */
   isBookedAndPencilled(date: NgbDate){
     if(this.isBooked(date)&&this.isPencilled(date)){
       return true;
@@ -219,35 +226,29 @@ export class BookingPageComponent implements OnInit{
         if(tempDate.getTime()>=this.testBookings[i].getTime()
         &&tempDate.getTime()<=this.testBookings[i+1].getTime()){
           if(this.bookingStatus[i/2]=='pencil'||this.bookingStatus[i/2]=='pencil pending'){
-            console.log("Booking owner is ........"+this.bookingOwner[i/2]);
             this.pencilledOwner = this.bookingOwner[i/2];          
             this.pencilledFrom =this.testBookings[i];
             this.pencilledTo = this.testBookings[i+1];
             this.pencilledStatus = this.bookingStatus[i/2];
-            console.log("Booking owner is ........"+this.pencilledOwner);
-
           } else {
-          this.selectedOwner = this.bookingOwner[i/2];
-          this.selectedFrom =this.testBookings[i];
-          this.selectedTo = this.testBookings[i+1];
-          this.selectedStatus = this.bookingStatus[i/2];
+            this.selectedOwner = this.bookingOwner[i/2];
+            this.selectedFrom =this.testBookings[i];
+            this.selectedTo = this.testBookings[i+1];
+            this.selectedStatus = this.bookingStatus[i/2];
           }
-          this.booked=true;
+            this.booked=true;
         }
     }
   }
 
   /**
-   * Opens the snackbar to confirm the booking
+   * Opens the snackbar to confirm the booking has been made
    */
   openSnackBar(){
     this.snackbar.openFromComponent(BookingConfirmationComponent,{
       duration:1500,
     })
   }
-
-
-
 }
 
 

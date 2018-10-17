@@ -59,24 +59,27 @@ export class HomeComponent implements OnInit {
   })
   }
 
-  //Deletes a booking
+  /**
+   * Deletes a booking and checks all pending bookings if they are now no longer blocked
+   */
   delete(email:string,env:string, start:Date,end:Date){
     this.bookingService.deleteBooking(email,env,start,end);
     this.bookingService.getBookingsByEnviroment(env)
     .subscribe(b=>{
       var standardList = new Array();
       var pencilList= new Array();
+      //Gets the list of all bookings and splits them into standard and pencilled bookings
       for(var i=0;i<b.length;i++){
-        console.log(i);
         if(b[i].type=="standard"){
-          console.log('standard');
           standardList.push(i);
         } else {
           pencilList.push(i);
         }
       }
-      console.log("Number of standard bookings "+standardList.length);
-      console.log("Number of pencilled bookings "+pencilList.length);
+      /**
+       * Checks if the pencil bookings are blocked by standard bookings
+       * If there is nothing blocking the pencilled bookings will turn them into standard booking
+       */
       for(var j=0;j<pencilList.length;j++){
         console.log(pencilList[j]);
         var pencilStart =new Date(b[pencilList[j]].startDate.seconds*1000).getTime();
@@ -92,7 +95,6 @@ export class HomeComponent implements OnInit {
             }
         }
         if(clash){
-          console.log("IS CLASHING");
         } else {
           this.bookingService.makeBooking(b[pencilList[j]].email,b[pencilList[j]].name,env,
             new Date(b[pencilList[j]].startDate.seconds *1000),

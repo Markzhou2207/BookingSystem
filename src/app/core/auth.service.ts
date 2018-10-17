@@ -8,39 +8,33 @@ import * as firebase from 'firebase/app';
 export class AuthService {
   authState: any = null;
   constructor(private afAuth: AngularFireAuth, private router: Router) {
-    // this.afAuth.authState.subscribe((auth) => {
-    //   this.authState = auth
-    // });
     this.authState = JSON.parse(localStorage.getItem('currentUser'));
 
   }
 
   //Checks if the user is logged in
   get isLoggedIn(): boolean {
-    console.log(this.authState);
     return this.authState !== null;
   }
 
   //Returns the email of the user
   get currentUserEmail(): any{
-    // return this.authState['email']
-    // return this.afAuth.auth.currentUser.email;
     return this.authState.user.email;
   }
   //Returns the full name of the user
   get currentUserName():any{
-    // return this.afAuth.auth.currentUser.displayName;
     return this.authState.user.displayName;
   }
 
 
-  // Authenticates the user with an email/password pair
+  /**
+   * Verifies user email/password against firebase's log
+   *  Stores the current session in local storage in case of refresh.
+   */
   emailLogin(email:string, password: string){
     this.afAuth.auth.signInWithEmailAndPassword(email,password)
         .then(value =>{
           this.authState=value;
-          console.log(this.currentUserName);
-
           this.router.navigateByUrl('/home');
           localStorage.setItem('currentUser',JSON.stringify(value));
         })
@@ -48,20 +42,6 @@ export class AuthService {
           console.log('Something went wrong: ',err.message);
         })
     return false;    
-  //   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-  // .then(function() {
-  //   return firebase.auth().signInWithEmailAndPassword(email, password)})
-  //   .then(value=>{
-  //     this.router.navigateByUrl('/home');
-  //   })
-  //   .catch(err=>{
-  //     console.log('Something went wrong: ',err);
-  //   })
-  // .catch(function(error) {
-  //   // Handle Errors here.
-  //   var errorCode = error.code;
-  //   var errorMessage = error.message;
-  // });
   }
 
   
@@ -80,7 +60,7 @@ export class AuthService {
       })
   }
 
-  // Logs the user out
+  // Logs the user out and removes the user session from local storage
   logout(){
     this.afAuth.auth.signOut().then(()=>{
       this.router.navigate(['/']);
