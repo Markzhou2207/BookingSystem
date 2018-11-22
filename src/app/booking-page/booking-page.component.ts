@@ -24,10 +24,10 @@ export class BookingPageComponent implements OnInit{
   selectedOwner:null;
   selectedFrom:Date;
   selectedTo:Date;
-  pencilledStatus:string;
-  pencilledOwner:null;
-  pencilledFrom:Date;
-  pencilledTo:Date;
+  pencilledStatus=[];
+  pencilledOwner=[];
+  pencilledFrom=[];
+  pencilledTo=[];
 
 
   //NgbCalendar
@@ -73,10 +73,10 @@ export class BookingPageComponent implements OnInit{
           && tempEnd.getTime()<=this.testBookings[i+1].getTime()
           ||tempStart.getTime()<=this.testBookings[i].getTime()
           && tempEnd.getTime()>=this.testBookings[i+1].getTime()){
-            bookingOwner.push(this.bookingEmails[i/2]);
-            if(this.bookingStatus[i/2]=='pencil' ||
-            this.bookingStatus[i/2]=='pencil pending'){
-              notBooked = false;
+            if(this.bookingStatus[i/2]=='standard'){
+              if(!bookingOwner.includes(this.bookingEmails[i/2])){  
+                bookingOwner.push(this.bookingEmails[i/2]);
+              }
             }
           }
         }
@@ -85,12 +85,11 @@ export class BookingPageComponent implements OnInit{
            this.bookingService.makePencilBooking(this.request.email,this.request.name,
            this.request.environment,tempStart,tempEnd,bookingOwner);
            this.openSnackBar();
+           console.log("Making Booking");
         } else if(notBooked){
            this.bookingService.makeBooking(this.request.email,this.request.name,
            this.request.environment,tempStart,tempEnd);
            this.openSnackBar();
-        } else {
-           this.validBooking=false;
         }
       }
 
@@ -134,7 +133,10 @@ export class BookingPageComponent implements OnInit{
    */
   onDateSelection(date: NgbDate) {
     this.selectedOwner = null;
-    this.pencilledOwner=null;
+    this.pencilledOwner=[];
+    this.pencilledFrom=[];
+    this.pencilledTo=[];
+    this.pencilledStatus=[];
     this.booked=false;
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
@@ -221,10 +223,10 @@ export class BookingPageComponent implements OnInit{
         if(tempDate.getTime()>=this.testBookings[i].getTime()
         &&tempDate.getTime()<=this.testBookings[i+1].getTime()){
           if(this.bookingStatus[i/2]=='pencil'||this.bookingStatus[i/2]=='pencil pending'){
-            this.pencilledOwner = this.bookingOwner[i/2];          
-            this.pencilledFrom =this.testBookings[i];
-            this.pencilledTo = this.testBookings[i+1];
-            this.pencilledStatus = this.bookingStatus[i/2];
+            this.pencilledOwner.push(this.bookingOwner[i/2]);          
+            this.pencilledFrom.push(this.testBookings[i]);
+            this.pencilledTo.push(this.testBookings[i+1]);
+            this.pencilledStatus.push(this.bookingStatus[i/2]);
           } else {
             this.selectedOwner = this.bookingOwner[i/2];
             this.selectedFrom =this.testBookings[i];

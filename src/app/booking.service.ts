@@ -31,13 +31,16 @@ export class BookingService {
 
   //Creates a booking
  makeBooking(email :string,name:string, env: string, start: Date, end: Date){
+      let now = new Date();
+      let temp = new Date(now.getFullYear(),now.getMonth(),now.getDate());
       var data = {
       startDate: start,
       endDate: end,
       email: email,
       environment: env,
       name: name,
-      type: "standard"
+      type: "standard",
+      dateBooked: temp
     };
     var docName = email+env+start.getTime()+start.getTime();
     var setDoc = this.db.collection('masterList').doc(docName).set(data);
@@ -47,6 +50,9 @@ export class BookingService {
 
   makePencilBooking(email :string,name:string,
      env: string, start: Date, end: Date, owners: string[]){
+      let now = new Date();
+      
+      let temp = new Date(now.getFullYear(),now.getMonth(),now.getDate());
       var data = {
         startDate: start,
         endDate: end,
@@ -54,7 +60,8 @@ export class BookingService {
         environment: env,
         name: name,
         type: "pencil pending",
-        owners:owners
+        owners:owners,
+        dateBooked: temp
       };
       var docName = email+env+start.getTime()+start.getTime();
       var setDoc = this.db.collection('masterList').doc(docName).set(data);

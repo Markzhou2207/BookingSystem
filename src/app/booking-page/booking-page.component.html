@@ -70,13 +70,15 @@
               Dates : {{selectedFrom| date: 'dd/MM/yyyy'}} - {{selectedTo| date: 'dd/MM/yyyy'}}
               <br>
           </div>
-          
-          <div *ngIf="pencilledOwner != null">
-              Pencilled by : {{pencilledOwner}}
+          <br>
+          <div  *ngFor="let owner of pencilledOwner; let i = index">
+              
+              Pencilled by : {{pencilledOwner[i]}}
               <br>
-              Dates : {{pencilledFrom| date: 'dd/MM/yyyy'}} - {{pencilledTo| date: 'dd/MM/yyyy'}}
+              Dates : {{pencilledFrom[i]| date: 'dd/MM/yyyy'}} - {{pencilledTo[i]| date: 'dd/MM/yyyy'}}
               <br>
-              Status : {{pencilledStatus}}
+              Status : {{pencilledStatus[i]}}
+              <br>
           </div>
           </mat-card>
       </div>
