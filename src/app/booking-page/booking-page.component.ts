@@ -46,16 +46,11 @@ export class BookingPageComponent implements OnInit{
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 1);
     this.request.environment="";
-    this.request.email=this.authService.currentUserEmail;
-    this.request.name=this.authService.currentUserName;
+    this.request.email=this.authService.getUsername();
+    this.request.name=this.authService.getName();
     console.log(this.request.name);
 
    }
-  
-
-  logOut(){
-    this.authService.logout();
-  }
 
   /**
    * Checks if booking for an environment is free

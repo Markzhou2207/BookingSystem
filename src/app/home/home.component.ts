@@ -24,14 +24,10 @@ export class HomeComponent implements OnInit {
     const tempDate = new Date();
       this.today = new Date(tempDate.getFullYear(),tempDate.getMonth(),tempDate.getDate());
   }
-
-  logOut(){
-    this.authService.logout();
-  }
   // Returns the bookings of a given user and displays the active bookings
   getBookings(): void{
-    console.log("Getting bookings for "+this.authService.currentUserName);
-  	this.bookingService.getBookingsByName(this.authService.currentUserEmail)
+    console.log("Getting bookings for "+this.authService.getName());
+  	this.bookingService.getBookingsByName(this.authService.getUsername())
   		.subscribe(b =>{
         console.log(b.length);
         // Removes the bookings that have expired i.e. end date before today

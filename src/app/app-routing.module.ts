@@ -3,16 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { BookingPageComponent } from './booking-page/booking-page.component';
-import { LoginComponent } from './login/login.component'
-import { SignupComponent } from './signup/signup.component';
-import { ResetpasswordComponent} from './resetpassword/resetpassword.component';
-import {AuthGuard} from './core/auth.guard';
+import { AdalGuard } from 'adal-angular4';
+
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path:'signup',component:SignupComponent},
-  { path: 'home', component: HomeComponent, canActivate:[AuthGuard]},
-  { path: 'reset', component: ResetpasswordComponent},
-  { path: 'booking', component: BookingPageComponent,canActivate:[AuthGuard]}
+  { path: '', component: HomeComponent, canActivate:[AdalGuard]},
+  { path: 'booking', component: BookingPageComponent,canActivate:[AdalGuard]}
 ];
 
 @NgModule({
