@@ -23,10 +23,16 @@ export class BookingService {
   }
 
   // Deletes a booking
-  deleteBooking(email:string,env: string, start: Date, end: Date){
-    console.log("delete booking -- "+name+env+start.getTime()+start.getTime());
-    this.db.collection('masterList').doc(email+env+start.getTime()+start.getTime()).delete();
-    this.db.collection(email).doc(email+env+start.getTime()+start.getTime()).delete();
+  deleteBooking(email:string,env: string, start: Date, end: Date,type:string){
+    var tmp='';
+    if(type=='standard'){
+      tmp = 's';
+    } else {
+      tmp = 'p';
+    }
+    console.log("delete booking -- "+tmp+name+env+start.getTime()+start.getTime());
+    this.db.collection('masterList').doc(tmp+email+env+start.getTime()+start.getTime()).delete();
+    this.db.collection(email).doc(tmp+email+env+start.getTime()+start.getTime()).delete();
   }
 
   //Creates a booking
@@ -42,7 +48,7 @@ export class BookingService {
       type: "standard",
       dateBooked: temp
     };
-    var docName = email+env+start.getTime()+start.getTime();
+    var docName = 's'+email+env+start.getTime()+start.getTime();
     var setDoc = this.db.collection('masterList').doc(docName).set(data);
 
     var setDoc = this.db.collection(email).doc(docName).set(data);
@@ -63,7 +69,7 @@ export class BookingService {
         owners:owners,
         dateBooked: temp
       };
-      var docName = email+env+start.getTime()+start.getTime();
+      var docName = 'p'+email+env+start.getTime()+start.getTime();
       var setDoc = this.db.collection('masterList').doc(docName).set(data);
   
       var setDoc = this.db.collection(email).doc(docName).set(data);

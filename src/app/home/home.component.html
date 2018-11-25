@@ -23,7 +23,7 @@
     {{booking.startDate| date: 'dd/MM/yyyy'}} - {{booking.endDate| date: 'dd/MM/yyyy'}}
     <br>
     {{booking.type}}
-    <button mat-raised-button (click)="openBottomSheet(booking.email,booking.environment,booking.startDate,booking.endDate)">Cancel Booking</button>
+    <button mat-raised-button (click)="openBottomSheet(booking.type,booking.email,booking.environment,booking.startDate,booking.endDate)">Cancel Booking</button>
   </mat-expansion-panel>
 </li>
 </ul>  

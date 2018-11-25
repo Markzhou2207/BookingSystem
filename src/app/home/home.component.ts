@@ -58,8 +58,8 @@ export class HomeComponent implements OnInit {
   /**
    * Deletes a booking and checks all pending bookings if they are now no longer blocked
    */
-  delete(email:string,env:string, start:Date,end:Date){
-    this.bookingService.deleteBooking(email,env,start,end);
+  delete(type:string,email:string,env:string, start:Date,end:Date){
+    this.bookingService.deleteBooking(email,env,start,end,type);
     this.bookingService.getBookingsByEnviroment(env)
     .subscribe(b=>{
       var standardList = new Array();
@@ -101,13 +101,13 @@ export class HomeComponent implements OnInit {
   }
 
   // Opens the confirmation window to delete a booking
-  openBottomSheet(name:string,env:string, start:Date,end:Date): void {
+  openBottomSheet(type:string,name:string,env:string, start:Date,end:Date): void {
     var temp = name+env+start+end;
     const sheetRef = this.bottomSheet.open(DeleteConfirmation);
     sheetRef.afterDismissed().subscribe(result=>{
       if(result != null){
         if(result.delete){
-                this.delete(name,env,start,end);
+                this.delete(type,name,env,start,end);
         }
       }      
     })

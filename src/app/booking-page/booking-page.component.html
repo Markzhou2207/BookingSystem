@@ -64,21 +64,23 @@
   <div class="container" fxLayout="row" fxLayoutWrap fxLayout.xs="column" fxLayoutGap="2.5%" fxLayoutAlign ="center">
       <div fxFlex="30%">
           <mat-card class="bookingCard">
-          <div *ngIf="selectedOwner != null">
-              Booked by : {{selectedOwner}}
+          <div *ngIf="selectedBooking != null">
+              Booked by : {{selectedBooking.name}}
               <br>
-              Dates : {{selectedFrom| date: 'dd/MM/yyyy'}} - {{selectedTo| date: 'dd/MM/yyyy'}}
+              Dates : {{selectedBooking.startDate| date: 'dd/MM/yyyy'}} - {{selectedBooking.endDate| date: 'dd/MM/yyyy'}}
               <br>
+              Booked on : {{selectedBooking.dateBooked| date: 'dd/MM/yyyy'}}
           </div>
           <br>
-          <div  *ngFor="let owner of pencilledOwner; let i = index">
+          <div  *ngFor="let owner of pencilledBookings; let i = index">
               
-              Pencilled by : {{pencilledOwner[i]}}
+              Pencilled by : {{pencilledBookings[i].name}}
               <br>
-              Dates : {{pencilledFrom[i]| date: 'dd/MM/yyyy'}} - {{pencilledTo[i]| date: 'dd/MM/yyyy'}}
+              Dates : {{pencilledBookings[i].startDate| date: 'dd/MM/yyyy'}} - {{pencilledBookings[i].endDate| date: 'dd/MM/yyyy'}}
               <br>
-              Status : {{pencilledStatus[i]}}
+              Status : {{pencilledBookings[i].type}}
               <br>
+              Booked on : {{pencilledBookings[i].dateBooked| date: 'dd/MM/yyyy'}}
           </div>
           </mat-card>
       </div>
